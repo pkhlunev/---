@@ -1,0 +1,954 @@
+/* ===== Базовые стили и переменные ===== */
+:root {
+    --primary: #6C5CE7;
+    --primary-light: #A29BFE;
+    --success: #00B894;
+    --warning: #FDCB6E;
+    --danger: #E17055;
+    --bg: #F8F9FA;
+    --bg-card: #FFFFFF;
+    --text: #2D3436;
+    --text-light: #636E72;
+    --border: #DFE6E9;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    --radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+}
+
+/* ===== Сайдбар ===== */
+.sidebar {
+    background: linear-gradient(180deg, #2D3436 0%, #1a1d1f 100%);
+    color: white;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    margin-bottom: 32px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.sidebar-subtitle {
+    color: #b2bec3;
+    font-size: 0.85rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    color: #dfe6e9;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: left;
+    width: 100%;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.productivity-score {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.score-label {
+    font-size: 0.85rem;
+    color: #b2bec3;
+}
+
+.score-value {
+    font-weight: 600;
+    color: var(--success);
+}
+
+.progress-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary-light);
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
+
+/* ===== Основной контент ===== */
+.main-content {
+    padding: 32px;
+    max-width: 1200px;
+}
+
+.view {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.view.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.view-header h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+/* ===== Кнопки ===== */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a4bd1;
+    transform: translateY(-1px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--text);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+/* ===== Календарь ===== */
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.current-month {
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-width: 140px;
+    text-align: center;
+}
+
+.methodology-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.method-label {
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.select-input {
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    padding: 8px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.calendar-day:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.calendar-day.today {
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+}
+
+.calendar-day.selected {
+    border-color: var(--primary);
+    background: #F0EDFF;
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+    cursor: default;
+}
+
+.calendar-day .day-tasks-count {
+    font-size: 0.7rem;
+    margin-top: 2px;
+    opacity: 0.7;
+}
+
+/* ===== Временные блоки ===== */
+.time-blocks-panel {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.time-blocks-panel h3 {
+    margin-bottom: 16px;
+}
+
+.time-blocks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+    min-height: 60px;
+}
+
+.time-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary);
+}
+
+.time-block .block-time {
+    font-weight: 600;
+    font-size: 0.9rem;
+    min-width: 80px;
+}
+
+.time-block .block-title {
+    flex: 1;
+}
+
+.time-block .block-delete {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.time-block .block-delete:hover {
+    background: #ffeaea;
+}
+
+.empty-state {
+    color: var(--text-light);
+    text-align: center;
+    padding: 20px;
+}
+
+/* ===== Привычки ===== */
+.habits-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.habit-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.habit-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.habit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.habit-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.habit-icon {
+    font-size: 2rem;
+}
+
+.habit-name {
+    font-weight: 600;
+}
+
+.habit-streak {
+    font-size: 0.8rem;
+    color: var(--success);
+    font-weight: 500;
+}
+
+.habit-days {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.habit-day {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.75rem;
+}
+
+.habit-day.completed {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+.habit-day:hover {
+    border-color: var(--primary);
+}
+
+.habit-progress {
+    margin-top: 12px;
+}
+
+.habit-progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.habit-progress-fill {
+    height: 100%;
+    background: var(--success);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+.habit-progress-text {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 4px;
+    text-align: right;
+}
+
+.habit-recommendations {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.recommendations-list {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.recommendation-item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.recommendation-item:last-child {
+    border-bottom: none;
+}
+
+/* ===== Задачи ===== */
+.tasks-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--border);
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.85rem;
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 200px;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    cursor: grab;
+    border-left: 4px solid transparent;
+}
+
+.task-item:active {
+    cursor: grabbing;
+}
+
+.task-item.priority-high {
+    border-left-color: var(--danger);
+}
+
+.task-item.priority-medium {
+    border-left-color: var(--warning);
+}
+
+.task-item.priority-low {
+    border-left-color: var(--success);
+}
+
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-item.completed .task-title {
+    text-decoration: line-through;
+}
+
+.task-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.task-checkbox.checked {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+.task-content {
+    flex: 1;
+}
+
+.task-title {
+    font-weight: 500;
+}
+
+.task-meta {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 2px;
+}
+
+.task-delete {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.task-delete:hover {
+    background: #ffeaea;
+}
+
+/* ===== Аналитика ===== */
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.analytics-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.analytics-card h3 {
+    margin-bottom: 16px;
+    font-size: 1rem;
+}
+
+.analytics-card canvas {
+    width: 100%;
+    max-height: 250px;
+}
+
+.heatmap {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.heatmap-cell {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    background: var(--border);
+    transition: var(--transition);
+}
+
+.heatmap-cell.level-1 { background: #a8e6cf; }
+.heatmap-cell.level-2 { background: #7ec8a7; }
+.heatmap-cell.level-3 { background: #55a97f; }
+.heatmap-cell.level-4 { background: #2d8a58; }
+.heatmap-cell.level-5 { background: #0f6b3f; }
+
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.stat-label {
+    color: var(--text-light);
+}
+
+.stat-value {
+    font-weight: 600;
+}
+
+/* ===== Модальные окна ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 28px;
+    width: 90%;
+    max-width: 480px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+    margin-bottom: 20px;
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+    padding: 10px 14px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+/* ===== Адаптивность ===== */
+@media (max-width: 768px) {
+    .app-container {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: relative;
+        height: auto;
+        padding: 16px;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .nav-btn {
+        flex: 1;
+        min-width: 100px;
+        justify-content: center;
+        font-size: 0.8rem;
+    }
+
+    .nav-btn span:last-child {
+        display: none;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-grid {
+        font-size: 0.8rem;
+    }
+
+    .habits-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .view-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .calendar-controls {
+        flex-wrap: wrap;
+    }
+
+    .methodology-selector {
+        flex-wrap: wrap;
+    }
+}
+/* Добавьте эти стили к предыдущему CSS */
+
+/* Селектор даты для привычек */
+.habits-date-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.habit-current-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-width: 160px;
+    text-align: center;
+}
+
+/* Кнопка просмотра задач */
+#viewTasksForDate {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Фильтр задач */
+.filter-date-label {
+    margin-left: auto;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+/* Улучшенные привычки */
+.habit-card {
+    position: relative;
+}
+
+.habit-check-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+}
+
+.habit-main-check {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.habit-main-check.completed {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+.habit-main-check.overcompleted {
+    background: #FFD700;
+    border-color: #FFD700;
+    color: white;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.habit-details {
+    flex: 1;
+}
+
+.habit-streak-info {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.streak-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.streak-badge.weekly {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.streak-badge.monthly {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.streak-badge.long {
+    background: #fce4ec;
+    color: #c62828;
+}
+
+.habit-history {
+    margin-top: 12px;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.habit-history-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+}
+
+.habit-history-dot.done {
+    background: var(--success);
+}
+
+.habit-history-dot.overdone {
+    background: #FFD700;
+}
+
+.habit-overcomplete-btn {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px;
+    background: #FFF9C4;
+    border: 1px solid #FFD54F;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.habit-overcomplete-btn:hover {
+    background: #FFF176;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .habits-date-selector {
+        flex-wrap: wrap;
+    }
+    
+    .habit-main-check {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}

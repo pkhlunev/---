@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Organizer — Персональный органайзер</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Боковая панель -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo">📋 Life Organizer</h1>
+                <p class="sidebar-subtitle">Ваш персональный помощник</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-view="calendar">
+                    <span class="nav-icon">📅</span>
+                    <span>Календарь</span>
+                </button>
+                <button class="nav-btn" data-view="habits">
+                    <span class="nav-icon">🎯</span>
+                    <span>Привычки</span>
+                </button>
+                <button class="nav-btn" data-view="tasks">
+                    <span class="nav-icon">✅</span>
+                    <span>Задачи</span>
+                </button>
+                <button class="nav-btn" data-view="analytics">
+                    <span class="nav-icon">📊</span>
+                    <span>Аналитика</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="productivity-score">
+                    <span class="score-label">Продуктивность</span>
+                    <span class="score-value" id="productivityScore">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="productivityBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Основной контент -->
+        <main class="main-content">
+            <!-- Вид: Календарь -->
+            <section class="view active" id="calendar-view">
+                <header class="view-header">
+                    <h2>📅 Календарь планирования</h2>
+                    <div class="calendar-controls">
+                        <button class="btn btn-outline" id="prevMonth">◀</button>
+                        <span class="current-month" id="currentMonth">Май 2026</span>
+                        <button class="btn btn-outline" id="nextMonth">▶</button>
+                        <button class="btn btn-primary" id="todayBtn">Сегодня</button>
+                    </div>
+                </header>
+
+                <div class="methodology-selector">
+                    <span class="method-label">Методика:</span>
+                    <select id="methodologySelect" class="select-input">
+                        <option value="timeBlocking">Тайм-блокинг</option>
+                        <option value="pomodoro">Помидорная техника</option>
+                        <option value="eisenhower">Матрица Эйзенхауэра</option>
+                        <option value="gtd">Доведение дел до конца (GTD)</option>
+                    </select>
+                    <button class="btn btn-small" id="showMethodInfo">ℹ️</button>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Генерируется динамически -->
+                </div>
+
+                <div class="time-blocks-panel" id="timeBlocksPanel">
+                    <h3>⏰ Временные блоки на <span id="selectedDateDisplay">сегодня</span></h3>
+                    <div class="time-blocks-list" id="timeBlocksList">
+                        <p class="empty-state">Выберите день в календаре для просмотра блоков</p>
+                    </div>
+                    <button class="btn btn-primary" id="addTimeBlock">+ Добавить временной блок</button>
+                    <button class="btn btn-outline" id="viewTasksForDate" style="margin-top: 8px; display: none;">
+                        📋 Посмотреть задачи на этот день
+                    </button>
+                </div>
+            </section>
+
+            <!-- Вид: Привычки -->
+            <section class="view" id="habits-view">
+                <header class="view-header">
+                    <h2>🎯 Трекер привычек</h2>
+                    <button class="btn btn-primary" id="addHabitBtn">+ Новая привычка</button>
+                </header>
+
+                <div class="habits-date-selector">
+                    <button class="btn btn-outline" id="habitPrevDay">◀</button>
+                    <span class="habit-current-date" id="habitCurrentDate">Сегодня</span>
+                    <button class="btn btn-outline" id="habitNextDay">▶</button>
+                    <button class="btn btn-small btn-primary" id="habitTodayBtn">Сегодня</button>
+                </div>
+
+                <div class="habits-container" id="habitsContainer">
+                    <!-- Генерируется динамически -->
+                </div>
+
+                <div class="habit-recommendations" id="habitRecommendations">
+                    <h3>💡 Рекомендации на основе статистики</h3>
+                    <div class="recommendations-list" id="recommendationsList"></div>
+                </div>
+            </section>
+
+            <!-- Вид: Задачи -->
+            <section class="view" id="tasks-view">
+                <header class="view-header">
+                    <h2>✅ Менеджер задач</h2>
+                    <button class="btn btn-primary" id="addTaskBtn">+ Новая задача</button>
+                </header>
+
+                <div class="tasks-filter">
+                    <button class="filter-btn active" data-filter="all">Все</button>
+                    <button class="filter-btn" data-filter="active">Активные</button>
+                    <button class="filter-btn" data-filter="completed">Завершённые</button>
+                    <button class="filter-btn" data-filter="today">На сегодня</button>
+                    <span class="filter-date-label" id="filterDateLabel"></span>
+                </div>
+
+                <div class="tasks-list" id="tasksList" 
+                     ondragover="handleDragOver(event)" 
+                     ondrop="handleDrop(event)">
+                    <!-- Генерируется динамически -->
+                </div>
+            </section>
+
+            <!-- Вид: Аналитика -->
+            <section class="view" id="analytics-view">
+                <header class="view-header">
+                    <h2>📊 Аналитика и прогресс</h2>
+                </header>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>📈 Прогресс привычек (30 дней)</h3>
+                        <canvas id="habitsChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>🍩 Выполнение задач</h3>
+                        <canvas id="tasksChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>📅 Тепловая карта активности</h3>
+                        <div class="heatmap" id="heatmap"></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>📊 Статистика продуктивности</h3>
+                        <div class="stats-list" id="statsList"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Модальные окна -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="timeBlockModal">
+            <h3>Добавить временной блок</h3>
+            <form id="timeBlockForm">
+                <input type="text" placeholder="Название блока" id="blockTitle" required>
+                <input type="time" id="blockStart" required>
+                <input type="time" id="blockEnd" required>
+                <select id="blockColor">
+                    <option value="#4CAF50">🟢 Работа</option>
+                    <option value="#2196F3">🔵 Учёба</option>
+                    <option value="#FF9800">🟠 Отдых</option>
+                    <option value="#9C27B0">🟣 Спорт</option>
+                    <option value="#F44336">🔴 Важное</option>
+                </select>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-outline close-modal">Отмена</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal" id="habitModal">
+    <h3>Новая привычка</h3>
+    <form id="habitForm">
+        <input type="text" placeholder="Название привычки" id="habitTitle" required>
+        <select id="habitFrequency">
+            <option value="daily">Ежедневно</option>
+            <option value="weekly">Еженедельно</option>
+            <option value="weekdays">По будням</option>
+        </select>
+        <select id="habitIcon">
+            <option value="🏃">🏃 Бег</option>
+            <option value="📚">📚 Чтение</option>
+            <option value="💧">💧 Вода</option>
+            <option value="🧘">🧘 Медитация</option>
+            <option value="💤">💤 Сон</option>
+            <option value="🍎">🍎 Питание</option>
+            <option value="📝">📝 Своя категория</option>
+        </select>
+        <!-- НОВОЕ ПОЛЕ -->
+        <input type="text" placeholder="Своя категория (необязательно)" id="habitCustomCategory">
+        <div class="modal-actions">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="button" class="btn btn-outline close-modal">Отмена</button>
+        </div>
+    </form>
+</div>
+
+        <div class="modal" id="taskModal">
+            <h3>Новая задача</h3>
+            <form id="taskForm">
+                <input type="text" placeholder="Название задачи" id="taskTitle" required>
+                <textarea placeholder="Описание" id="taskDescription" rows="3"></textarea>
+                <input type="date" id="taskDate">
+                <select id="taskPriority">
+                    <option value="low">🟢 Низкий</option>
+                    <option value="medium" selected>🟡 Средний</option>
+                    <option value="high">🔴 Высокий</option>
+                </select>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                    <button type="button" class="btn btn-outline close-modal">Отмена</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal" id="methodInfoModal">
+            <h3 id="methodTitle"></h3>
+            <p id="methodDescription"></p>
+            <button class="btn btn-outline close-modal">Закрыть</button>
+        </div>
+
+        <div class="modal" id="habitProgressModal">
+            <h3>Прогресс привычки</h3>
+            <p id="habitProgressInfo"></p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="markOvercomplete">Отметить перевыполнение (+50%)</button>
+                <button class="btn btn-outline close-modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
