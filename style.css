@@ -952,3 +952,278 @@ body {
         font-size: 1.2rem;
     }
 }
+
+.drag-hint {
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 0.95rem;
+    animation: pulse 2s infinite;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.drag-instruction {
+    background: #F0EDFF;
+    border: 1px solid #A29BFE;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: #6C5CE7;
+}
+
+/* Календарь при перетаскивании */
+.calendar-day.drag-over {
+    background: #F0EDFF !important;
+    border-color: #6C5CE7 !important;
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+    z-index: 10;
+}
+
+.calendar-day {
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+/* Мини-задачи в календаре */
+.day-mini-tasks {
+    margin-top: 4px;
+    width: 100%;
+}
+
+.mini-task {
+    font-size: 7px;
+    padding: 1px 3px;
+    margin: 1px 0;
+    border-radius: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: rgba(108, 92, 231, 0.15);
+    color: #6C5CE7;
+    font-weight: 500;
+}
+
+.mini-task.priority-high {
+    background: rgba(225, 112, 85, 0.25);
+    color: #E17055;
+}
+
+.mini-task.priority-medium {
+    background: rgba(253, 203, 110, 0.3);
+    color: #F39C12;
+}
+
+.mini-task.priority-low {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00B894;
+}
+
+/* Кнопка редактирования задачи */
+.task-edit {
+    background: none;
+    border: none;
+    color: #6C5CE7;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.task-edit:hover {
+    background: #F0EDFF;
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #6C5CE7;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 2000;
+    animation: slideIn 0.3s ease;
+    font-size: 14px;
+    max-width: 400px;
+}
+
+.notification.success {
+    background: #00B894;
+}
+
+.notification.error {
+    background: #E17055;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+/* Задача в режиме перетаскивания */
+.task-item.dragging {
+    opacity: 0.4;
+    transform: scale(0.95);
+    border: 2px dashed #6C5CE7;
+}
+
+.task-item {
+    cursor: grab;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.task-item:active {
+    cursor: grabbing;
+}
+
+.task-item:hover .task-actions {
+    opacity: 1;
+}
+
+.task-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+/* Стили для мобильного перетаскивания */
+.calendar-day.drop-target {
+    border: 2px dashed #6C5CE7 !important;
+    background: #F8F7FF !important;
+    cursor: pointer;
+}
+
+.calendar-day.touch-hover {
+    background: #F0EDFF !important;
+    border-color: #6C5CE7 !important;
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+    z-index: 10;
+}
+
+.drop-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.mobile-instruction {
+    background: #F0EDFF;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Улучшенные сенсорные области */
+@media (max-width: 768px) {
+    .task-item {
+        padding: 16px;
+        margin-bottom: 8px;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    
+    .task-checkbox {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+    }
+    
+    .calendar-day {
+        min-height: 60px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .btn, .nav-btn, .filter-btn {
+        min-height: 44px; /* Минимальная область для касания по Apple HIG */
+        padding: 12px 16px;
+    }
+    
+    .habit-main-check {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+    }
+}
+/* Подсказка сброса внизу сайта */
+#resetHint {
+    transition: all 0.3s ease;
+    animation: resetPulse 2s infinite;
+}
+
+@keyframes resetPulse {
+    0%, 100% { 
+        border-color: #ff0000;
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    }
+    50% { 
+        border-color: #ff4444;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    }
+}
+
+#resetHint:hover {
+    background: rgba(255, 0, 0, 0.15) !important;
+    transform: scale(1.03) !important;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4) !important;
+}
+
+#resetHint:active {
+    background: rgba(255, 0, 0, 0.2) !important;
+    transform: scale(1.05) !important;
+}
+
+/* Индикатор прогресса сброса */
+#resetProgress {
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    #resetHint {
+        padding: 25px 20px;
+        font-size: 0.85rem;
+        margin-top: 60px;
+        line-height: 1.4;
+    }
+    
+    #resetProgress {
+        bottom: 20px;
+        min-width: 250px;
+        padding: 12px 18px;
+    }
+}
