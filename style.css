@@ -2,6 +2,7 @@
 :root {
     --primary: #6C5CE7;
     --primary-light: #A29BFE;
+    --primary-bg: #F0EDFF;
     --success: #00B894;
     --warning: #FDCB6E;
     --danger: #E17055;
@@ -12,6 +13,7 @@
     --border: #DFE6E9;
     --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     --radius: 12px;
+    --radius-sm: 8px;
     --transition: all 0.3s ease;
 }
 
@@ -971,14 +973,26 @@ body {
 }
 
 .drag-instruction {
-    background: #F0EDFF;
-    border: 1px solid #A29BFE;
-    padding: 10px 16px;
-    border-radius: 8px;
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
     margin-bottom: 16px;
     font-size: 0.9rem;
-    color: #6C5CE7;
+    transition: all 0.3s ease;
 }
+
+.drag-instruction.desktop {
+    background: var(--primary-bg);
+    border: 1px solid var(--primary-light);
+    color: var(--primary);
+}
+
+.drag-instruction.mobile {
+    background: #FFF3E0;
+    border: 1px solid #FF9800;
+    color: #E65100;
+}
+
+.mobile-instruction { display: none; }
 
 /* Календарь при перетаскивании */
 .calendar-day.drag-over {

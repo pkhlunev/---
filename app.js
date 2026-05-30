@@ -439,6 +439,7 @@ const Calendar = {
 };
 
 // Drag & Drop 
+
 const DragDrop = {
     handleCalendarDragOver(e) {
         e.preventDefault();
@@ -535,7 +536,7 @@ const DragDrop = {
         const dragHint = DOM.get('dragHint');
         if (dragHint) dragHint.style.display = 'none';
     },
-    
+   
     // Desktop
     handleTaskDragStart(e, taskId) {
         this.startTaskDrag(taskId, e.target.closest('.task-item'));
@@ -778,7 +779,17 @@ const Tasks = {
     _currentFilter: 'all',
     _touchTimer: null,
     _touchStartTaskId: null,
-    
+    _updateDragInstruction() {
+        const ins = DOM.query('.drag-instruction');
+        if (!ins) return;
+        if (DeviceDetector.isMobile()) {
+            ins.innerHTML = '👆 <strong>Нажмите и удерживайте задачу, чтобы переместить её в календарь</strong>';
+            ins.className = 'drag-instruction mobile';
+        } else {
+            ins.innerHTML = '💡 <strong>Чтобы запланировать задачу:</strong> захватите её мышкой и перетащите на день в календаре';
+            ins.className = 'drag-instruction desktop';
+        }
+    },
     onActivate() {
         DOM.queryAll('.filter-btn').forEach(b => b.classList.remove('active'));
         const allBtn = DOM.query('[data-filter="all"]');
@@ -787,6 +798,7 @@ const Tasks = {
         state.taskFilterDate = null;
         const filterLabel = DOM.get('filterDateLabel');
         if (filterLabel) filterLabel.textContent = '';
+        this._updateDragInstruction();
         this.render();
     },
     
@@ -1237,12 +1249,12 @@ function bindEvents() {
 function init() {
     state.resetToToday();
     state._sanitizeHabits();
-    
     Calendar.render();
     Habits.render();
     Tasks.render();
     Recommendations.render();
     Productivity.update();
+    Tasks._updateDragInstruction();
     
     if (DeviceDetector.isMobile()) {
         console.log('📱 Мобильное устройство обнаружено - активированы touch-события');
@@ -1562,7 +1574,6 @@ const DevTools = {
 };
 
 
-// Активируем инструменты разработчика
 DevTools.init();
 // Привязка событий и запуск
 document.addEventListener('DOMContentLoaded', () => {
