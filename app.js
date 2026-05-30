@@ -16,9 +16,9 @@ const CONFIG = {
             { id: 4, title: 'Медитация', icon: '🧘', frequency: 'daily', customCategory: '', progress: {}, streak: 0 }
         ],
         TASKS: [
-            { id: 1, title: 'Сдать курсовую работу', description: 'Подготовить все файлы', date: '2026-05-21', priority: 'high', completed: false },
-            { id: 2, title: 'Купить продукты', description: 'Молоко, хлеб, овощи', date: '2026-05-20', priority: 'medium', completed: false },
-            { id: 3, title: 'Позвонить маме', description: '', date: '2026-05-20', priority: 'low', completed: true }
+            { id: 1, title: 'Сдать курсовую работу', description: 'Подготовить все файлы', date: '2026-05-28', priority: 'high', completed: false },
+            { id: 2, title: 'Купить продукты', description: 'Молоко, хлеб, овощи', date: '2026-05-29', priority: 'medium', completed: false },
+            { id: 3, title: 'Позвонить маме', description: '', date: '2026-05-30', priority: 'low', completed: false }
         ],
         NEXT_ID: 10
     },
@@ -1173,24 +1173,65 @@ const Analytics = {
 // Продуктивность
 const Productivity = {
     update() {
-        const completed = state.tasks.filter(t => t.completed).length;
-        const total = state.tasks.length;
-        const taskScore = total > 0 ? (completed / total) * 40 : 0;
-        
         const last7Days = DateUtils.getDaysArray(7, state.today);
-        let done = 0;
-        state.habits.forEach(h => last7Days.forEach(d => { if ((h.progress?.[d] || 0) >= 100) done++; }));
         
-        const habitScore = (state.habits.length * 7) > 0 ? (done / (state.habits.length * 7)) * 50 : 0;
-        const score = Math.round(Math.min(100, taskScore + habitScore));
+        // ЗАДАЧНЫЙ ВКЛАД (40%)
+        const tasksInWeek = state.tasks.filter(t => last7Days.includes(t.date));
+        const completedTasks = tasksInWeek.filter(t => t.completed).length;
+        const totalTasks = tasksInWeek.length || 1;
+        const taskScore = (completedTasks / totalTasks) * 100;
         
+        // ПРИВЫЧКОВЫЙ ВКЛАД (50%)
+        let completedCount = 0;
+        let totalPossible = 0;
+        let totalOverPercent = 0;
+        
+        state.habits.forEach(habit => {
+            last7Days.forEach(date => {
+                totalPossible++;
+                const progress = habit.progress?.[date] || 0;
+                if (progress >= 100) {
+                    completedCount++;
+                    if (progress > 100) {
+                        totalOverPercent += (progress - 100);
+                    }
+                }
+            });
+        });
+        
+        const habitScore = totalPossible > 0 ? (completedCount / totalPossible) * 100 : 0;
+        
+        // БОНУС ЗА ПЕРЕВЫПОЛНЕНИЕ (каждые лишние 50% = +2%, не более 10%)
+        let overBonus = 0;
+        if (totalOverPercent > 0) {
+            // Суммируем все перевыполнения, каждые 50% дают +2%
+            const bonusSteps = Math.floor(totalOverPercent / 50);
+            overBonus = Math.min(10, bonusSteps * 2);
+        }
+        
+        // ИТОГО
+        let baseScore = (taskScore * 0.4) + (habitScore * 0.5);
+        let finalScore = Math.min(100, baseScore + overBonus);
+        finalScore = Math.round(finalScore);
+        
+        // ОТОБРАЖЕНИЕ
         const scoreEl = DOM.get('productivityScore');
         const barEl = DOM.get('productivityBar');
-        if (scoreEl) scoreEl.textContent = `${score}%`;
-        if (barEl) barEl.style.width = `${score}%`;
+        
+        if (scoreEl) {
+            scoreEl.textContent = finalScore >= 100 ? `${finalScore}% 🔥` : `${finalScore}%`;
+            scoreEl.style.color = finalScore >= 80 ? '#00B894' : 
+                                  finalScore >= 60 ? '#FDCB6E' : '#E17055';
+        }
+        
+        if (barEl) {
+            barEl.style.width = `${finalScore}%`;
+            barEl.style.background = finalScore >= 80 ? 'linear-gradient(90deg, #00B894, #00CEC9)' :
+                                     finalScore >= 60 ? 'linear-gradient(90deg, #FDCB6E, #00B894)' :
+                                     'linear-gradient(90deg, #E17055, #FDCB6E)';
+        }
     }
 };
-
 // Привязка событий
 function bindEvents() {
     // Навигация
